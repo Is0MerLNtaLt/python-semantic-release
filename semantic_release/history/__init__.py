@@ -2,6 +2,7 @@
 """
 import re
 from typing import Optional
+import toml
 
 import ndebug
 import semver
@@ -156,11 +157,19 @@ def set_new_version(new_version: str) -> bool:
     with open(filename, mode='r') as fr:
         content = fr.read()
 
+    with open("pyproject.toml", mode="r") as pp_fr:
+        pp_content = pp_fr.read()
+
     # Update the version variable
     content = replace_version_string(content, variable, new_version)
+
+    pp_content = replace_version_string(pp_content, "version", new_version)
 
     # Write the update back to the file
     with open(filename, mode='w') as fw:
         fw.write(content)
+
+    with open("pyproject.toml", mode='w') as pp_fw:
+        pp_fw.write(pp_content)
 
     return True
