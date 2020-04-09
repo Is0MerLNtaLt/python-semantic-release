@@ -139,8 +139,9 @@ def commit_new_version(version: str):
     version_file = config.get('semantic_release', 'version_variable').split(':')[0]
     # get actual path to filename, to allow running cmd from subdir of git root
     version_filepath = PurePath(os.getcwd(), version_file).relative_to(repo.working_dir)
-
+    version_filepath_pp = PurePath(os.getcwd(), "pyproject.toml").relative_to(repo.working_dir)
     repo.git.add(str(version_filepath))
+    repo.git.add(str(version_filepath_pp))
     return repo.git.commit(m=message, author=commit_author)
 
 
